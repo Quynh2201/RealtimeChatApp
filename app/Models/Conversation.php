@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Group;  
 
 class Conversation extends Model
 {
@@ -15,7 +17,7 @@ class Conversation extends Model
         'last_message_id'
     ];
 
-    public function last_message()
+    public function lastMessage()
     {
         return $this->belongsTo(Message::class, 'last_message_id');
     }
@@ -28,5 +30,38 @@ class Conversation extends Model
     public function user2()
     {
         return $this->belongsTo(User::class, 'user_id2');
+    }
+
+    public static function getConversationForSideBar(User $currentUser)
+    {
+        $user = User::getUsersExceptUser($currentUser);
+        $group = Group::getGroupsForUser($currentUser);
+
+        return $user->map(function (User $user) {
+            return $user->toConversationArray();
+        })->concat($group->map(function (Group $group) {
+            return $group->toConversationArray();
+        }));
+    }
+
+    public static function updateConversationWithMessage($userId1, $userId2, $message) 
+    {
+        $conversation = Conversation::where(function ($query) use ($userId1, $userId2) {
+            $query->where('user_id1', $userId1)
+                ->where('user_id2', $userId2);
+        })->orWhere(function ($query) use ($userId1, $userId2) {
+            $query->orWhere('user_id1', $userId2)
+                ->where('user_id2', $userId1);
+        })->first();
+
+        if($conversation) {
+            $conversation->update(['last_message_id' => $message->id]);
+        } else {
+            Conversation::create([
+                'user_id1' => $userId1,
+                'user_id2' => $userId2,
+                'last_message_id' => $message->id,
+            ]);
+        }
     }
 }
