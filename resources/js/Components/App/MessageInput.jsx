@@ -1,12 +1,12 @@
 import { FaceSmileIcon, HandThumbUpIcon, PaperAirplaneIcon, PaperClipIcon, PhotoIcon, XCircleIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NewMessageInput from "./NewMessageInput";
 import AttachmentPreview from "./AttachmentPreview";
 import CustomAudioPlayer from "./CustomAudioPlayer";
 import axios from "axios";
 import EmojiPicker from "emoji-picker-react";
 import { Popover } from "@headlessui/react";
-import { isImage, isAudio, isVideo, isPDF } from "@/helpers";
+import { isImage, isAudio } from "@/helpers";
 import AudioRecorder from "./AudioRecorder";
 
 export default function MessageInput({ conversation = null }) {

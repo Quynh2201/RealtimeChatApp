@@ -7,7 +7,7 @@ import { Link, usePage } from '@inertiajs/react';
 import { useEventBus } from '@/EventBus';
 import Toast from '@/Components/App/Toast';
 import NewMessageNotification from '@/Components/App/NewMessageNotification';
-import { UserPlusIcon } from '@heroicons/react/24/solid';
+import { BoltIcon, ChatBubbleLeftRightIcon, UserPlusIcon } from '@heroicons/react/24/solid';
 import NewUserModal from '@/Components/App/NewUserModal';
 
 export default function Authenticated({ header, children }) {
@@ -16,6 +16,7 @@ export default function Authenticated({ header, children }) {
     const conversations = page.props.auth.conversations;
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
     const [showNewUserModal, setShowNewUserModal] = useState(false);
+    const [showQuickMessageModal, setShowQuickMessageModal] = useState(false);
     const { emit } = useEventBus();
 
     useEffect(() => {
@@ -46,7 +47,7 @@ export default function Authenticated({ header, children }) {
                         user: message.sender,
                         group_id: message.group_id,
                         message: 
-                            message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : "attachments"}`
+                            message.message || `Shared ${message.attachments.length === 1 ? "an attachment" : "some attachments"}`
                     })
                 })
             if(conversation.is_group) {
@@ -97,6 +98,13 @@ export default function Authenticated({ header, children }) {
 
                             <div className="hidden sm:flex sm:items-center sm:ms-6">
                                 <div className="ms-3 relative flex">
+                                    {/* <button 
+                                        onClick={() => setShowQuickMessageModal(true)} 
+                                        className='tooltip tooltip-left mr-2 text-gray-400 hover:text-gray-200'
+                                        data-tip='Quick messages'
+                                    >
+                                        <BoltIcon className='h-5 w-5' />
+                                    </button> */}
                                     {user.is_admin ? (
                                         <button 
                                             onClick={() => setShowNewUserModal(true)} 

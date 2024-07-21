@@ -10,7 +10,7 @@ const ChatLayout = ({ children }) => {
     const page = usePage();
     const currentUser = page.props.auth.user;
     const conversations = page.props.auth.conversations;
-    const selectedConversation = page.props.auth.selectedConversation;
+    const selectedConversation = page.props.selectedConversation;
     const [onlineUsers, setOnlineUsers] = useState({});
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversations] = useState([]);
@@ -59,7 +59,6 @@ const ChatLayout = ({ children }) => {
     useEffect(() => {
         Echo.join('online')
             .here((users) => {
-                // console.log("Here", users);
                 const onlineUsersObj = Object.fromEntries(
                     users.map((user) => [user.id, user])
                 );
@@ -69,7 +68,6 @@ const ChatLayout = ({ children }) => {
                 });
             })
             .joining((user) => {
-                // console.log("Joining", user);
                 setOnlineUsers((prevUsers) => {
                     const updatedUsers = { ...prevUsers };
                     updatedUsers[user.id] = user;
@@ -77,7 +75,6 @@ const ChatLayout = ({ children }) => {
                 })
             })
             .leaving((user) => {
-                // console.log("Leaving", user);
                 setOnlineUsers((prevUsers) => {
                     const updatedUsers = { ...prevUsers };
                     delete updatedUsers[user.id];
@@ -145,12 +142,15 @@ const ChatLayout = ({ children }) => {
         };
     }, [on]);
 
+    console.log(selectedConversation);
+    console.log(page.props);
+
     return (
         <>
             <div className="flex-1 w-full flex overflow-hidden">
                 <div
-                    className={`transition-all hidden sm:w-[220px] sm:flex sm:flex-col md:w-[300px] bg-slate-800 overflow-hidden ${
-                        selectedConversation ? "-ml-[100%] sm:ml-0" : ""
+                    className={`transition-all sm:w-[220px] sm:flex sm:flex-col md:w-[300px] bg-slate-800 overflow-hidden ${
+                        selectedConversation ? "hidden -ml-[100%] sm:ml-0" : ""
                     }`}
                 >
                     {/* Title */}

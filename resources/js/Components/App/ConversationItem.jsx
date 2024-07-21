@@ -14,10 +14,12 @@ const ConversationItem = ({ conversation, selectedConversation = null, online = 
             classes = "border-blue-500 bg-black/20";
         }
 
-        if(selectedConversation.is_group && conversation.is_group && selectedConversation.id == conversation.id) {
+        if(selectedConversation.is_user && !conversation.is_group && selectedConversation.id == conversation.id) {
             classes = "border-blue-500 bg-black/20";
         }
     }
+
+    console.log(selectedConversation);
     
     return (
         <Link

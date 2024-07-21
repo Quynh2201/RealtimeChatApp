@@ -123,7 +123,7 @@ class MessageController extends Controller
         }
         
         $message->delete();
-        // $lastMessage = null;
+        $lastMessage = null;
         
         if($group) {
             $group = Group::find($group->id);
@@ -131,7 +131,6 @@ class MessageController extends Controller
         } else if ($conversation) {
             $conversation = Conversation::find($conversation->id);
             $lastMessage = $conversation->lastMessage;
-            // dd(Message::find($lastMessage));
         }
         
 

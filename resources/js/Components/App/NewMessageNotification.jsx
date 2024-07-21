@@ -29,7 +29,7 @@ export default function NewMessageNotification({}) {
                         href={toast.group_id ? route('chat.group', toast.group_id) : route('chat.user', toast.user.id)}
                     >
                         <UserAvatar user={toast.user} />
-                        <span>{toast.message}</span>
+                        <span>{toast.message.length > 22 ? toast.message.substring(0, 23) + "..." : toast.message.length}</span>
                     </Link>
                 </div>
             ))}
